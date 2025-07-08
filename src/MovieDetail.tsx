@@ -139,7 +139,12 @@ function MovieDetail() {
                   ))}
                 </div>
                 <div className="movie-detail-actions">
-                  <button className="movie-detail-btn movie-detail-btn-primary">
+                  <button 
+                  className="movie-detail-btn movie-detail-btn-primary"
+                  onClick= { (e)=>{
+                    e.preventDefault();
+                    alert("この機能はまだ実装されていません")
+                  }}>
                     ▶ Watch Now
                   </button>
                   <button className="movie-detail-btn">

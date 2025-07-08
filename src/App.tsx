@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import MovieCard from "./MovieCard";
+import { Link } from "react-router-dom";
 
 type Movie = {
   id: string;
@@ -48,7 +49,7 @@ function App() {
     const data = await response.json();
 
     setMovieList(
-      data.results.map((movie: MovieJson) => ({
+      data.results.slice(1).map((movie: MovieJson) => ({
         id: movie.id,
         original_title: movie.original_title,
         overview: movie.overview,
@@ -77,49 +78,52 @@ function App() {
   return (
     <div>
       {heroMovie && (
-        <>
-          <section className="hero-section">
-            {heroMovie.poster_path && (
-              <>
-                <img className="hero-section-bg"
+        <section className="hero-section">
+          {heroMovie.poster_path && (
+            <>
+              <img className="hero-section-bg"
                 src={`https://image.tmdb.org/t/p/w780${heroMovie.poster_path}`}
                 alt={heroMovie.original_title} />
-                <div className="hero-section-gradient" />
-              </>
-            )}
-            <div className="hero-section-content">
-              <h1 className="hero-section-title">{heroMovie.original_title}</h1>
+              <div className="hero-section-gradient" />
+            </>
+          )}
+          <div className="hero-section-content">
+            <h1 className="hero-section-title">{heroMovie.original_title}</h1>
 
-              <div className="hero-section-badges">
-                {heroMovie.release_date && (
-                  <span className="hero-section-badge">{new Date(heroMovie.release_date).getFullYear()}</span>
-                )}
-              </div>
-              {heroMovie.overview && (
-                <p className="hero-section-overview">{heroMovie.overview}</p>
+            <div className="hero-section-badges">
+              {heroMovie.release_date && (
+                <span className="hero-section-badge">{new Date(heroMovie.release_date).getFullYear()}</span>
               )}
-              <div className="hero-section-actions">
-                <button className="hero-section-btn hero-section-btn-primary">
-                  <span>▶ Play</span>
-                </button>
+            </div>
+            {heroMovie.overview && (
+              <p className="hero-section-overview">{heroMovie.overview}</p>
+            )}
+            <div className="hero-section-actions">
+              <button
+               className="hero-section-btn hero-section-btn-primary"
+               onClick= { ()=> alert("この機能はまだ実装されていません")}>
+                <span>▶ Play</span>
+              </button>
+              <Link to={`/movies/${heroMovie.id}`}>
                 <button className="hero-section-btn hero-section-btn-secondary">
                   <span>More Info</span>
                 </button>
-              </div>
+              </Link>
             </div>
-          </section>
-          <section className="movie-row-section">
-            <h2 className="movie-row-title">
-              {keyword ? `「${keyword}」の検索結果` : "人気映画"}
-            </h2>
-            <div className="movie-row-scroll">
-              {movieList.map((movie) => (
-                <MovieCard movie={movie} key={movie.id} />
-              ))}
-            </div>
-          </section>
-        </>
+          </div>
+        </section>
       )}
+
+      <section className="movie-row-section">
+        <h2 className="movie-row-title">
+          {keyword ? `「${keyword}」の検索結果` : "人気映画"}
+        </h2>
+        <div className="movie-row-scroll">
+          {movieList.map((movie) => (
+            <MovieCard movie={movie} key={movie.id} />
+          ))}
+        </div>
+      </section>
 
       <div className="app-search-wrap">
         <input
