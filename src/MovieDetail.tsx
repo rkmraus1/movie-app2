@@ -127,7 +127,7 @@ function MovieDetail() {
                   </span>
                   <span className="badge-outline">
                     <Star className="badge-icon-svg badge-star" size={14} />
-                    {(movie.rating / 10).toFixed(1)}
+                    {(movie.rating / 2).toFixed(1)}
                   </span>
                 </div>
                 <p className="movie-detail-overview">{movie.overview}</p>

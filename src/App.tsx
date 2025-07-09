@@ -9,6 +9,7 @@ type Movie = {
   poster_path: string;
   overview: string;
   release_date: string;
+  genre_ids?: number[];
 };
 
 type MovieJson = {
@@ -18,6 +19,7 @@ type MovieJson = {
   id: string;
   original_language: string;
   original_title: string;
+  name: string;
   overview: string;
   popularity: number;
   poster_path: string;
@@ -31,7 +33,46 @@ type MovieJson = {
 function App() {
   const [keyword, setKeyword] = useState("");
   const [movieList, setMovieList] = useState<Movie[]>([]);
+  const [animeList, setAnimeList] = useState<Movie[]>([]);
   const [heroMovie, setHeroMovie] = useState<Movie | null>(null);
+  const [tvGenres, setTvGenres] = useState<{ [key: number]: string }>({});
+
+ const FetchAnimeList = async () => {
+    const excludedGenres = [10751, 10762, 10770, 10766, 99, 10767, 35];
+
+    const allResults: MovieJson[] = [];
+
+    for (let page = 1; page <= 10; page++) {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/discover/tv?with_genres=16&sort_by=popularity.desc&language=ja&page=${page}=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+          },
+        }
+      );
+      const data = await response.json();
+      allResults.push(...data.results);
+    };
+
+    const filteredResults = allResults.filter((anime: MovieJson) =>
+      anime.genre_ids? !anime.genre_ids.some(id =>
+      excludedGenres.includes(id)) &&　anime.original_language === "ja": false
+    );
+
+    const top20 = filteredResults.slice(0, 20);
+
+    setAnimeList(
+      top20.map((anime: MovieJson) => ({
+        id: anime.id,
+        original_title: anime.original_title || anime.name,
+        poster_path: anime.poster_path,
+        release_date: anime.release_date || "",
+        genre_ids: anime.genre_ids,
+        overview: anime.overview || "",
+      }))
+    );
+  }; 
 
   const fetchMovieList = async () => {
     let url = "";
@@ -71,8 +112,26 @@ function App() {
 
   };
 
+  const fetchTvGenres = async () => {
+    const response = await fetch("https://api.themoviedb.org/3/genre/tv/list?language=ja", {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+      },
+    });
+    const data = await response.json();
+
+    const genreMap: { [key: number]: string } = {};
+    data.genres.forEach((genre: { id: number; name: string }) => {
+      genreMap[genre.id] = genre.name;
+    });
+
+    setTvGenres(genreMap);
+  };
+
   useEffect(() => {
     fetchMovieList();
+    FetchAnimeList();
+    fetchTvGenres();
   }, [keyword]);
 
   return (
@@ -88,20 +147,16 @@ function App() {
             </>
           )}
           <div className="hero-section-content">
+            <div className="hero-rank-badge">#1</div>
             <h1 className="hero-section-title">{heroMovie.original_title}</h1>
 
-            <div className="hero-section-badges">
-              {heroMovie.release_date && (
-                <span className="hero-section-badge">{new Date(heroMovie.release_date).getFullYear()}</span>
-              )}
-            </div>
             {heroMovie.overview && (
               <p className="hero-section-overview">{heroMovie.overview}</p>
             )}
             <div className="hero-section-actions">
               <button
-               className="hero-section-btn hero-section-btn-primary"
-               onClick= { ()=> alert("この機能はまだ実装されていません")}>
+                className="hero-section-btn hero-section-btn-primary"
+                onClick={() => alert("この機能はまだ実装されていません")}>
                 <span>▶ Play</span>
               </button>
               <Link to={`/movies/${heroMovie.id}`}>
@@ -133,6 +188,18 @@ function App() {
           onChange={(e) => setKeyword(e.target.value)}
         />
       </div>
+
+      <section className="movie-row-section">
+        <h2 className="movie-row-title">人気アニメ</h2>
+        <div className="movie-row-scroll">
+          {animeList.map((anime) => (
+
+
+            <MovieCard movie={anime} key={anime.id} />
+          ))}
+        </div>
+      </section>
+
     </div>
   );
 }
