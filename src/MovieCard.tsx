@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "./App.css";
 
 type Movie = {
@@ -15,7 +14,7 @@ const MovieCard = (props: Props) => {
   const { movie } = props;
 
   return (
-    <Link to={`/movies/${movie.id}`} key={movie.id} className="movie-card">
+    <div className="movie-card">
       <div className="movie-card__imgwrap">
         <img
           src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`}
@@ -26,7 +25,7 @@ const MovieCard = (props: Props) => {
           <h3 className="movie-card__title">{movie.original_title}</h3>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

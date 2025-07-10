@@ -175,7 +175,9 @@ function App() {
         </h2>
         <div className="movie-row-scroll">
           {movieList.map((movie) => (
-            <MovieCard movie={movie} key={movie.id} />
+            <Link to={`/movies/${movie.id}`} key={movie.id}>
+            <MovieCard movie={movie} />
+            </Link>
           ))}
         </div>
       </section>
@@ -193,9 +195,9 @@ function App() {
         <h2 className="movie-row-title">人気アニメ</h2>
         <div className="movie-row-scroll">
           {animeList.map((anime) => (
-
-
-            <MovieCard movie={anime} key={anime.id} />
+            <Link to ={`/animes/anime-${anime.id}`} key={anime.id}>
+            <MovieCard movie={anime}/>
+            </Link>
           ))}
         </div>
       </section>
