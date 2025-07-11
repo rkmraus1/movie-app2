@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import MovieCard from "./MovieCard";
 import { Link } from "react-router-dom";
+import HeroSection from "./HeroSection";
+import MovieSection from "./MovieSection";
+import AnimeSection from "./AnimeSection";
 
 type Movie = {
   id: string;
@@ -34,10 +37,12 @@ function App() {
   const [keyword, setKeyword] = useState("");
   const [movieList, setMovieList] = useState<Movie[]>([]);
   const [animeList, setAnimeList] = useState<Movie[]>([]);
+  const [searchAnimeList, setSearchAnimeList] = useState<Movie[]>([]);
+  const [animeKeyword, setAnimeKeyword] = useState("");
   const [heroMovie, setHeroMovie] = useState<Movie | null>(null);
   const [tvGenres, setTvGenres] = useState<{ [key: number]: string }>({});
 
- const FetchAnimeList = async () => {
+  const FetchAnimeList = async () => {
     const excludedGenres = [10751, 10762, 10770, 10766, 99, 10767, 35];
 
     const allResults: MovieJson[] = [];
@@ -56,8 +61,8 @@ function App() {
     };
 
     const filteredResults = allResults.filter((anime: MovieJson) =>
-      anime.genre_ids? !anime.genre_ids.some(id =>
-      excludedGenres.includes(id)) &&　anime.original_language === "ja": false
+      anime.genre_ids ? !anime.genre_ids.some(id =>
+        excludedGenres.includes(id)) && anime.original_language === "ja" : false
     );
 
     const top20 = filteredResults.slice(0, 20);
@@ -72,7 +77,36 @@ function App() {
         overview: anime.overview || "",
       }))
     );
-  }; 
+  };
+
+  const fetchAnimeSearchResults = async (keyword: string) => {
+    if (!keyword) {
+      setSearchAnimeList([]);
+      return;
+    }
+    const url = `https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(keyword)}&language=ja&page=1`;
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+      },
+    });
+    const data = await response.json();
+
+    const filteredResults = data.results.filter((anime: MovieJson) =>
+      anime.genre_ids?.includes(16)
+      );
+
+    setSearchAnimeList(
+      filteredResults.map((anime: MovieJson) => ({
+        id: anime.id,
+        original_title: anime.original_title || anime.name,
+        poster_path: anime.poster_path,
+        release_date: anime.first_air_date || "",  
+        genre_ids: anime.genre_ids,
+        overview: anime.overview || "",
+      }))
+    );
+  };
 
   const fetchMovieList = async () => {
     let url = "";
@@ -134,73 +168,30 @@ function App() {
     fetchTvGenres();
   }, [keyword]);
 
+  useEffect(() => {
+    fetchAnimeSearchResults(animeKeyword);
+  }, [animeKeyword]);
+
+
+  const displayedAnimeList = animeKeyword ? searchAnimeList : animeList;
+
   return (
     <div>
-      {heroMovie && (
-        <section className="hero-section">
-          {heroMovie.poster_path && (
-            <>
-              <img className="hero-section-bg"
-                src={`https://image.tmdb.org/t/p/w780${heroMovie.poster_path}`}
-                alt={heroMovie.original_title} />
-              <div className="hero-section-gradient" />
-            </>
-          )}
-          <div className="hero-section-content">
-            <div className="hero-rank-badge">#1</div>
-            <h1 className="hero-section-title">{heroMovie.original_title}</h1>
+      <HeroSection
+       heroMovie={heroMovie}
+      />
 
-            {heroMovie.overview && (
-              <p className="hero-section-overview">{heroMovie.overview}</p>
-            )}
-            <div className="hero-section-actions">
-              <button
-                className="hero-section-btn hero-section-btn-primary"
-                onClick={() => alert("この機能はまだ実装されていません")}>
-                <span>▶ Play</span>
-              </button>
-              <Link to={`/movies/${heroMovie.id}`}>
-                <button className="hero-section-btn hero-section-btn-secondary">
-                  <span>More Info</span>
-                </button>
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
+      <MovieSection
+        keyword={keyword}
+        setKeyword={setKeyword}
+        movieList={movieList}
+      />
 
-      <section className="movie-row-section">
-        <h2 className="movie-row-title">
-          {keyword ? `「${keyword}」の検索結果` : "人気映画"}
-        </h2>
-        <div className="movie-row-scroll">
-          {movieList.map((movie) => (
-            <Link to={`/movies/${movie.id}`} key={movie.id}>
-            <MovieCard movie={movie} />
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <div className="app-search-wrap">
-        <input
-          type="text"
-          className="app-search"
-          placeholder="映画タイトルで検索..."
-          onChange={(e) => setKeyword(e.target.value)}
-        />
-      </div>
-
-      <section className="movie-row-section">
-        <h2 className="movie-row-title">人気アニメ</h2>
-        <div className="movie-row-scroll">
-          {animeList.map((anime) => (
-            <Link to ={`/animes/anime-${anime.id}`} key={anime.id}>
-            <MovieCard movie={anime}/>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <AnimeSection
+        keyword={animeKeyword}
+        setKeyword={setAnimeKeyword}
+        animeList={displayedAnimeList}
+      />
 
     </div>
   );

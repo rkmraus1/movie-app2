@@ -60,6 +60,7 @@ function AnimeDetail() {
     };
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         fetchAnimeDetail();
     }, [pureId])
 
