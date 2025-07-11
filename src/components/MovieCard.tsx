@@ -1,4 +1,4 @@
-import "./App.css";
+import "../styles/App.css";
 
 type Movie = {
   id: string;

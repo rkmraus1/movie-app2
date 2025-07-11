@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import "./App.css";
-import MovieCard from "./MovieCard";
+import "../styles/App.css";
+import MovieCard from "../components/MovieCard";
 import { Link } from "react-router-dom";
-import HeroSection from "./HeroSection";
-import MovieSection from "./MovieSection";
-import AnimeSection from "./AnimeSection";
+import HeroSection from "../components/HeroSection";
+import MovieSection from "../components/MovieSection";
+import AnimeSection from "../components/AnimeSection";
 
 type Movie = {
   id: string;

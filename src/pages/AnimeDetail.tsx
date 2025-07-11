@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import "./MovieDetail.css";
+import "../styles/MovieDetail.css";
 import { ArrowLeft, Clock, Star } from "lucide-react";
 
 type AnimeDetailJson = {
