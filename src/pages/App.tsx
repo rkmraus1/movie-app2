@@ -1,46 +1,17 @@
 import { useEffect, useState } from "react";
 import "../styles/App.css";
-import MovieCard from "../components/MovieCard";
-import { Link } from "react-router-dom";
 import HeroSection from "../components/HeroSection";
 import MovieSection from "../components/MovieSection";
 import AnimeSection from "../components/AnimeSection";
-
-type Movie = {
-  id: string;
-  original_title: string;
-  poster_path: string;
-  overview: string;
-  release_date: string;
-  genre_ids?: number[];
-};
-
-type MovieJson = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: string;
-  original_language: string;
-  original_title: string;
-  name: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-};
+import type { Anime, Movie, MovieJson } from "../types/media";
 
 function App() {
   const [keyword, setKeyword] = useState("");
   const [movieList, setMovieList] = useState<Movie[]>([]);
-  const [animeList, setAnimeList] = useState<Movie[]>([]);
-  const [searchAnimeList, setSearchAnimeList] = useState<Movie[]>([]);
+  const [animeList, setAnimeList] = useState<Anime[]>([]);
+  const [searchAnimeList, setSearchAnimeList] = useState<Anime[]>([]);
   const [animeKeyword, setAnimeKeyword] = useState("");
   const [heroMovie, setHeroMovie] = useState<Movie | null>(null);
-  const [tvGenres, setTvGenres] = useState<{ [key: number]: string }>({});
 
   const FetchAnimeList = async () => {
     const excludedGenres = [10751, 10762, 10770, 10766, 99, 10767, 35];
@@ -73,7 +44,11 @@ function App() {
         original_title: anime.original_title || anime.name,
         poster_path: anime.poster_path,
         release_date: anime.release_date || "",
-        genre_ids: anime.genre_ids,
+        year: Number((anime.release_date || "").split("-")[0]) || 0,
+        rating: anime.vote_average,
+        runtime: 0,
+        score: anime.vote_count,
+        genres: [],
         overview: anime.overview || "",
       }))
     );
@@ -94,16 +69,19 @@ function App() {
 
     const filteredResults = data.results.filter((anime: MovieJson) =>
       anime.genre_ids?.includes(16)
-      );
+    );
 
     setSearchAnimeList(
       filteredResults.map((anime: MovieJson) => ({
         id: anime.id,
         original_title: anime.original_title || anime.name,
         poster_path: anime.poster_path,
-        release_date: anime.first_air_date || "",  
-        genre_ids: anime.genre_ids,
-        overview: anime.overview || "",
+        release_date: anime.release_date || "",
+        year: Number((anime.release_date || "").split("-")[0]) || 0,
+        rating: anime.vote_average,
+        runtime: 0,
+        score: anime.vote_count,
+        genres: [],
       }))
     );
   };
@@ -146,39 +124,22 @@ function App() {
 
   };
 
-  const fetchTvGenres = async () => {
-    const response = await fetch("https://api.themoviedb.org/3/genre/tv/list?language=ja", {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
-      },
-    });
-    const data = await response.json();
-
-    const genreMap: { [key: number]: string } = {};
-    data.genres.forEach((genre: { id: number; name: string }) => {
-      genreMap[genre.id] = genre.name;
-    });
-
-    setTvGenres(genreMap);
-  };
 
   useEffect(() => {
     fetchMovieList();
     FetchAnimeList();
-    fetchTvGenres();
   }, [keyword]);
 
   useEffect(() => {
     fetchAnimeSearchResults(animeKeyword);
   }, [animeKeyword]);
 
-
   const displayedAnimeList = animeKeyword ? searchAnimeList : animeList;
 
   return (
     <div>
       <HeroSection
-       heroMovie={heroMovie}
+        heroMovie={heroMovie}
       />
 
       <MovieSection
@@ -192,7 +153,6 @@ function App() {
         setKeyword={setAnimeKeyword}
         animeList={displayedAnimeList}
       />
-
     </div>
   );
 }

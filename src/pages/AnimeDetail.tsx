@@ -2,33 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../styles/MovieDetail.css";
 import { ArrowLeft, Clock, Star } from "lucide-react";
-
-type AnimeDetailJson = {
-    backdrop_path: string | null;
-    genres: { id: number; name: string }[];
-    id: string;
-    original_language: string;
-    original_name: string;
-    overview: string;
-    popularity: number;
-    poster_path: string;
-    first_air_date: string;
-    vote_average: number;
-    vote_count: number;
-    episode_run_time: number[];
-};
-
-type Anime = {
-    id: string;
-    original_title: string;
-    overview: string;
-    poster_path: string;
-    year: number;
-    rating: number;
-    runtime: number;
-    score: number;
-    genres: string[];
-};
+import type { Anime,AnimeDetailJson } from "../types/media";
 
 function AnimeDetail() {
     const { id } = useParams();
@@ -48,7 +22,7 @@ function AnimeDetail() {
 
         setAnime({
             id: String(data.id),
-            original_title: data.name,
+            original_title: data.original_name,
             overview: data.overview,
             poster_path: data.poster_path,
             year: Number(data.first_air_date?.split("-")[0] ?? "0"),

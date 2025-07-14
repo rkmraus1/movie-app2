@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import MovieCard from "./MovieCard";
+import type { Anime } from "../types/media";
 
 interface AnimeSectionProps {
-  animeList: Movie[];
+  animeList: Anime[];
   keyword: string;
   setKeyword: (keyword: string) => void;
 }
