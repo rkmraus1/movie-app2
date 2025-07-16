@@ -3,6 +3,7 @@ import "../styles/App.css";
 import HeroSection from "../components/HeroSection";
 import MovieSection from "../components/MovieSection";
 import AnimeSection from "../components/AnimeSection";
+import MyListSection from "../components/MyListSection";
 import type { Anime, Movie, MovieJson } from "../types/media";
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
 
     for (let page = 1; page <= 10; page++) {
       const response = await fetch(
-        `https://api.themoviedb.org/3/discover/tv?with_genres=16&sort_by=popularity.desc&language=ja&page=${page}=1`,
+        `https://api.themoviedb.org/3/discover/tv?with_genres=16&sort_by=popularity.desc&language=ja&page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
@@ -121,8 +122,24 @@ function App() {
         release_date: first.release_date,
       });
     }
-
   };
+
+  const [myList, setMyList] = useState<Movie[]>([
+  {
+    id: "1",
+    original_title: "君の名は。",
+    overview: "ある日、入れ替わった2人の高校生の物語。",
+    poster_path: "/yLglTwyFOUZt5fNKm0PWL1PK5gm.jpg",
+    release_date: "2016-08-26",
+  },
+  {
+    id: "2",
+    original_title: "千と千尋の神隠し",
+    overview: "不思議な世界に迷い込んだ少女の冒険。",
+    poster_path: "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+    release_date: "2001-07-20",
+  }
+]);
 
 
   useEffect(() => {
@@ -153,6 +170,9 @@ function App() {
         setKeyword={setAnimeKeyword}
         animeList={displayedAnimeList}
       />
+
+      <MyListSection myList={myList} />
+
     </div>
   );
 }

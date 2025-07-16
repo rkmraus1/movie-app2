@@ -12,6 +12,8 @@ type Props = {
 
 const MovieCard = (props: Props) => {
   const { movie } = props;
+  
+
 
   return (
     <div className="movie-card">
