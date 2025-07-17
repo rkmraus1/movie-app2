@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../styles/MovieDetail.css";
 import { ArrowLeft, Clock, Star } from "lucide-react";
-import type { MovieDetail, MovieDetailJson } from "../types/media"
+import type { MovieDetail as MovieDetailType, MovieDetailJson } from "../types/media"
 
 function MovieDetail() {
   const { id } = useParams();
-  const [movie, setMovie] = useState<MovieDetail | null>(null);
+  const [movie, setMovie] = useState<MovieDetailType | null>(null);
 
   const fetchMovieDetail = async () => {
     const response = await fetch(

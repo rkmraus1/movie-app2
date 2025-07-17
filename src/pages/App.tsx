@@ -124,7 +124,7 @@ function App() {
     }
   };
 
-  const [myList, setMyList] = useState<Movie[]>([
+  const [myList, _] = useState<Movie[]>([
   {
     id: "1",
     original_title: "君の名は。",
@@ -155,6 +155,7 @@ function App() {
 
   return (
     <div>
+      
       <HeroSection
         heroMovie={heroMovie}
       />
