@@ -149,8 +149,8 @@ body {
     padding: 1.2rem 0 1.2rem 0;
   }
   .app-title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    /* font-size: 2rem;
+    margin-bottom: 1rem; */
   }
   .app-search {
     width: 94vw;
