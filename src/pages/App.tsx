@@ -160,19 +160,24 @@ function App() {
         heroMovie={heroMovie}
       />
 
+      <div id="movie" className="scroll-mt-14">
       <MovieSection
         keyword={keyword}
         setKeyword={setKeyword}
         movieList={movieList}
       />
-
+      </div>
+      <div id="anime" className="scroll-mt-14">
       <AnimeSection
         keyword={animeKeyword}
         setKeyword={setAnimeKeyword}
         animeList={displayedAnimeList}
       />
+      </div>
 
+      <div id="mylist" className="scroll-mt-14">
       <MyListSection myList={myList} />
+      </div>
 
     </div>
   );

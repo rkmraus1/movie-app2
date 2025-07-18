@@ -9,6 +9,14 @@ interface AnimeSectionProps {
 }
 
 export default function AnimeSection({ animeList, keyword, setKeyword }: AnimeSectionProps) {
+
+  // ▼ animeListから重複IDのアニメを除去（同じidがあるとReactのkey警告が出るため）
+  const uniqueAnimeList = animeList.filter(
+    (anime, index, self) =>
+      self.findIndex((a) => a.id === anime.id) === index
+  );
+
+
   return (
     <>
       <section className="movie-row-section">
@@ -16,11 +24,12 @@ export default function AnimeSection({ animeList, keyword, setKeyword }: AnimeSe
           {keyword ? `「${keyword}」の検索結果` : "人気アニメ"}
         </h2>
         <div className="movie-row-scroll">
-          {animeList.map((anime) => (
+          {uniqueAnimeList.map((anime) => (
             <Link to={`/animes/anime-${anime.id}`} key={anime.id}>
               <MovieCard movie={anime} />
             </Link>
           ))}
+
         </div>
       </section>
 

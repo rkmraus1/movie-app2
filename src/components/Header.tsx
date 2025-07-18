@@ -1,6 +1,7 @@
 import '../styles/index.css';
 import "../styles/App.css";
 import { useState } from "react";
+import { useLocation, Link } from "react-router-dom"; // ← Link を追加
 
 type Props = {
   children?: React.ReactNode;
@@ -14,6 +15,16 @@ function Header(props: Props) {
     setIsOpen(!isOpen);
   };
 
+  const location = useLocation(); // 現在のパスを取得
+
+  // ロゴクリック時の処理
+  const handleLogoClick = (e: React.MouseEvent) => {
+    if (location.pathname === "/") {
+      e.preventDefault(); // リンク遷移を止める
+      window.scrollTo({ top: 0, behavior: "smooth" }); // 上部へスクロール
+    }
+  };
+
   const navItems = [
     { label: "MOVIE", href: "#movie" },
     { label: "ANIME", href: "#anime" },
@@ -24,7 +35,13 @@ function Header(props: Props) {
   return (
     <div>
       <header className="bg-[#181818]/80 fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 h-14">
-        <h1 className="app-title">MOVIEBOX</h1>
+        <Link
+          to="/"
+          onClick={handleLogoClick}
+          className="app-title text-white text-lg font-bold hover:opacity-80 transition"
+        >
+          MOVIEBOX
+        </Link>
 
         <nav className="hidden md:flex gap-8 text-white text-sm font-semibold">
           {navItems.map(({ label, href }) => (
@@ -63,31 +80,30 @@ function Header(props: Props) {
         </button>
       </header>
 
-    {/* Mobile Menu */}
-<div
-  className={`
-    fixed top-14 right-0 w-1/2 z-40 bg-gray-900 text-white
-    transform transition-transform duration-300 ease-in-out
-    transition-opacity
-    ${isOpen ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"}
-  `}
->
-  <div className="flex flex-col items-start justify-start">
-    {navItems.map(({ label, href }, index) => (
-      <a
-        key={label}
-        href={href}
-        onClick={() => setIsOpen(false)}
-        className={`w-full text-lg font-semibold px-6 py-4 border-b border-gray-700 hover:text-yellow-400 transition
-          ${index === navItems.length - 1 ? 'border-b-0' : ''}
+      {/* Mobile Menu */}
+      <div
+        className={`
+          fixed top-14 right-0 w-1/2 z-40 bg-gray-900 text-white
+          transform transition-transform duration-300 ease-in-out
+          transition-opacity
+          ${isOpen ? "translate-y-0 opacity-100 pointer-events-auto" : "-translate-y-full opacity-0 pointer-events-none"}
         `}
       >
-        {label}
-      </a>
-    ))}
-  </div>
-</div>
-
+        <div className="flex flex-col items-start justify-start">
+          {navItems.map(({ label, href }, index) => (
+            <a
+              key={label}
+              href={href}
+              onClick={() => setIsOpen(false)}
+              className={`w-full text-lg font-semibold px-6 py-4 border-b border-gray-700 hover:text-yellow-400 transition
+                ${index === navItems.length - 1 ? 'border-b-0' : ''}
+              `}
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      </div>
 
       <main className="pt-14">{children}</main>
     </div>
