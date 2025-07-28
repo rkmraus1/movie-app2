@@ -8,6 +8,7 @@ import App from "./pages/App.tsx";
 import MovieDetail from "./pages/MovieDetail.tsx";
 import AnimeDetail from "./pages/AnimeDetail.tsx";
 
+
 const router = createBrowserRouter([
   {
     path: "/",

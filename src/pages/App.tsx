@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import "../styles/App.css";
+import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
 import MovieSection from "../components/MovieSection";
 import AnimeSection from "../components/AnimeSection";
 import MyListSection from "../components/MyListSection";
+import LoginSection from "../components/LoginSection";
 import type { Anime, Movie, MovieJson } from "../types/media";
+import { auth } from "../firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 function App() {
   const [keyword, setKeyword] = useState("");
@@ -125,21 +129,21 @@ function App() {
   };
 
   const [myList, _] = useState<Movie[]>([
-  {
-    id: "1",
-    original_title: "君の名は。",
-    overview: "ある日、入れ替わった2人の高校生の物語。",
-    poster_path: "/yLglTwyFOUZt5fNKm0PWL1PK5gm.jpg",
-    release_date: "2016-08-26",
-  },
-  {
-    id: "2",
-    original_title: "千と千尋の神隠し",
-    overview: "不思議な世界に迷い込んだ少女の冒険。",
-    poster_path: "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
-    release_date: "2001-07-20",
-  }
-]);
+    {
+      id: "1",
+      original_title: "君の名は。",
+      overview: "ある日、入れ替わった2人の高校生の物語。",
+      poster_path: "/yLglTwyFOUZt5fNKm0PWL1PK5gm.jpg",
+      release_date: "2016-08-26",
+    },
+    {
+      id: "2",
+      original_title: "千と千尋の神隠し",
+      overview: "不思議な世界に迷い込んだ少女の冒険。",
+      poster_path: "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+      release_date: "2001-07-20",
+    }
+  ]);
 
 
   useEffect(() => {
@@ -151,36 +155,54 @@ function App() {
     fetchAnimeSearchResults(animeKeyword);
   }, [animeKeyword]);
 
+
+  //ログイン情報の受け取り
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const [user, setUser] = useState<any>(null);
+
+
   const displayedAnimeList = animeKeyword ? searchAnimeList : animeList;
 
   return (
-    <div>
-      
-      <HeroSection
-        heroMovie={heroMovie}
-      />
+    <div className="w-full max-w-screen-xl mx-auto">
+      <Header user={user} />
 
-      <div id="movie" className="scroll-mt-14">
-      <MovieSection
-        keyword={keyword}
-        setKeyword={setKeyword}
-        movieList={movieList}
-      />
-      </div>
-      <div id="anime" className="scroll-mt-14">
-      <AnimeSection
-        keyword={animeKeyword}
-        setKeyword={setAnimeKeyword}
-        animeList={displayedAnimeList}
-      />
+      <HeroSection heroMovie={heroMovie} />
+
+      <div id="movie" className="scroll-mt-14 mt-8 sm:mt-12">
+        <MovieSection
+          keyword={keyword}
+          setKeyword={setKeyword}
+          movieList={movieList}
+        />
       </div>
 
-      <div id="mylist" className="scroll-mt-14">
-      <MyListSection myList={myList} />
+      <div id="anime" className="scroll-mt-14 mt-8 sm:mt-12">
+        <AnimeSection
+          keyword={animeKeyword}
+          setKeyword={setAnimeKeyword}
+          animeList={displayedAnimeList}
+        />
+      </div>
+
+      <div id="mylist" className="scroll-mt-14 mt-8 sm:mt-12 mb-10">
+        <MyListSection myList={myList} />
+      </div>
+
+      <div id="login" className="scroll-mt-14 mt-8 sm:mt-12 mb-10">
+        <LoginSection user={user} setUser={setUser} />
+
       </div>
 
     </div>
   );
+
 }
 
 export default App;

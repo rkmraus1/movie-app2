@@ -1,21 +1,18 @@
 import '../styles/index.css';
 import "../styles/App.css";
 import { useState } from "react";
-import { useLocation, Link } from "react-router-dom"; // ← Link を追加
+import { useLocation, Link } from "react-router-dom";
 
 type Props = {
   children?: React.ReactNode;
+  user: any;
 };
 
-function Header(props: Props) {
-  const { children } = props;
+function Header({ children, user }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
   const location = useLocation(); // 現在のパスを取得
+
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   // ロゴクリック時の処理
   const handleLogoClick = (e: React.MouseEvent) => {
@@ -29,7 +26,7 @@ function Header(props: Props) {
     { label: "MOVIE", href: "#movie" },
     { label: "ANIME", href: "#anime" },
     { label: "MY LIST", href: "#mylist" },
-    { label: "LOGIN", href: "#login" },
+    { label: user ? "LOGOUT" : "LOGIN", href: "#login" },
   ];
 
   return (
@@ -48,6 +45,15 @@ function Header(props: Props) {
             <a
               key={label}
               href={href}
+              onClick={(e) => {
+                if (href === "#login") {
+                  e.preventDefault();
+                  const target = document.getElementById("login");
+                  if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                  }
+                }
+              }}
               className="hover:text-yellow-400 transition"
             >
               {label}
@@ -94,14 +100,24 @@ function Header(props: Props) {
             <a
               key={label}
               href={href}
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {
+                if (href === "#login") {
+                  e.preventDefault();
+                  const target = document.getElementById("login");
+                  if (target) {
+                    target.scrollIntoView({ behavior: "smooth" });
+                  }
+                }
+                setIsOpen(false); 
+              }}
               className={`w-full text-lg font-semibold px-6 py-4 border-b border-gray-700 hover:text-yellow-400 transition
-                ${index === navItems.length - 1 ? 'border-b-0' : ''}
-              `}
+      ${index === navItems.length - 1 ? 'border-b-0' : ''}
+    `}
             >
               {label}
             </a>
           ))}
+
         </div>
       </div>
 
