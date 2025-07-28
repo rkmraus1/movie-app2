@@ -192,7 +192,7 @@ function App() {
       </div>
 
       <div id="mylist" className="scroll-mt-14 mt-8 sm:mt-12 mb-10">
-        <MyListSection myList={myList} />
+        <MyListSection myList={user ? myList : []} user={user} />
       </div>
 
       <div id="login" className="scroll-mt-14 mt-8 sm:mt-12 mb-10">

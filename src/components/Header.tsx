@@ -54,7 +54,7 @@ function Header({ children, user }: Props) {
                   }
                 }
               }}
-              className="hover:text-yellow-400 transition"
+              className="min-w-[80px] text-center hover:text-yellow-400 transition"
             >
               {label}
             </a>
@@ -121,9 +121,10 @@ function Header({ children, user }: Props) {
         </div>
       </div>
 
-      <main className="pt-14">{children}</main>
+      <main className="mt-14">{children}</main>
     </div>
   );
 }
 
 export default Header;
+
