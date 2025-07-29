@@ -7,8 +7,8 @@ import AnimeSection from "../components/AnimeSection";
 import MyListSection from "../components/MyListSection";
 import LoginSection from "../components/LoginSection";
 import type { Anime, Movie, MovieJson } from "../types/media";
-import { auth } from "../firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth, googleProvider } from "../firebase";
+import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
 
 function App() {
   const [keyword, setKeyword] = useState("");
@@ -90,7 +90,6 @@ function App() {
       }))
     );
   };
-
   const fetchMovieList = async () => {
     let url = "";
     if (keyword) {
@@ -127,6 +126,15 @@ function App() {
       });
     }
   };
+
+  const handleLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    setUser(result.user); // ユーザー情報を更新
+  } catch (error) {
+    console.error("ログインエラー:", error);
+  }
+};
 
   const [myList, _] = useState<Movie[]>([
     {
@@ -192,7 +200,11 @@ function App() {
       </div>
 
       <div id="mylist" className="scroll-mt-14 mt-8 sm:mt-12 mb-10">
-        <MyListSection myList={user ? myList : []} user={user} />
+        <MyListSection
+        myList={user ? myList : []}
+        user={user}
+        handleLogin={handleLogin}
+         />
       </div>
 
       <div id="login" className="scroll-mt-14 mt-8 sm:mt-12 mb-10">

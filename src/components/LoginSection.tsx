@@ -29,7 +29,7 @@ function LoginSection({ user, setUser }: Props) {
     };
 
     return (
-        <div className="py-6 flex flex-col items-center justify-center gap-4">
+        <div className="pt-0 sm:pt-2 pb-4 flex flex-col items-center justify-center gap-4">
             {user ? (
                 <div className="flex flex-col items-center justify-center gap-4 text-white">
                     <p className="text-lg font-semibold text-center">

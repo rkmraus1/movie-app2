@@ -4,28 +4,27 @@ import type { Movie } from "../types/media";
 type Props = {
   myList: Movie[];
   user: any;
+  handleLogin: () => void;
 };
 
-export default function MyListSection({ myList, user }: Props) {
+export default function MyListSection({ myList, user, handleLogin }: Props) {
   if (!user) {
     return (
       <section className="movie-row-section">
         <h2 className="movie-row-title">マイリスト</h2>
-
-        {/* 横並び（スマホは縦に折れる） */}
         <div className="movie-row-scroll flex flex-wrap sm:flex-nowrap gap-6 sm:gap-8 items-center">
           {/* ダミー1 */}
-          <div className="relative movie-card">
+          <div onClick={handleLogin} className="relative movie-card">
             <img
               src="https://image.tmdb.org/t/p/w500/yLglTwyFOUZt5fNKm0PWL1PK5gm.jpg"
               alt="君の名は。"
               className="movie-card__image blur-sm opacity-50"
-              
+
             />
           </div>
 
           {/* ダミー2 */}
-          <div className="relative movie-card">
+          <div onClick={handleLogin} className="relative movie-card">
             <img
               src="https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg"
               alt="千と千尋の神隠し"
@@ -36,13 +35,16 @@ export default function MyListSection({ myList, user }: Props) {
             </div>
           </div>
 
-          {/* 説明文（PCでは右に、スマホでは下に） */}
-          <div className="text-white text-sm sm:text-base font-semibold sm:ml-4 mt-2 sm:mt-0">
-            <p className="hidden sm:block">
-              マイリストを使用するには<br />ログインしてください
+          {/* ✅ ログイン説明テキスト */}
+          <div className="text-white text-base sm:text-base font-semibold sm:ml-6 sm:self-center w-full sm:w-auto mt-4 sm:mt-0 mb-6">
+            {/* PC用*/}
+            <p className="hidden sm:block leading-relaxed">
+              ログインしてマイリストを利用する
             </p>
-            <p className="sm:hidden text-center w-full">
-              マイリストを使用するにはログインしてください
+
+            {/* スマホ用：中央揃えで1行表示 */}
+            <p className="sm:hidden text-center leading-relaxed">
+              ログインしてマイリストを利用する
             </p>
           </div>
         </div>
