@@ -17,6 +17,8 @@
 ├   ├   └── MyListSection.tsx
 ├   ├── layout
 ├   ├   └── Layout.tsx
+├   ├── lib
+├   ├   └── firestoreUtils.ts
 ├   ├── pages
 ├   ├   ├── AnimeDetail.tsx
 ├   ├   ├── App.tsx
@@ -43,4 +45,4 @@
 ├── tsconfig.node.json
 └── vite.config.ts
 
-10 directories, 34 files
+11 directories, 35 files

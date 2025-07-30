@@ -1,12 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 import "../styles/MovieDetail.css";
 import { ArrowLeft, Clock, Star } from "lucide-react";
 import type { MovieDetail as MovieDetailType, MovieDetailJson } from "../types/media"
 
+type ContextType = {
+  user: any;
+  setUser: (user: any) => void;
+};
+
 function MovieDetail() {
   const { id } = useParams();
   const [movie, setMovie] = useState<MovieDetailType | null>(null);
+  const { user } = useOutletContext<ContextType>();
 
   const fetchMovieDetail = async () => {
     const response = await fetch(
@@ -47,9 +53,8 @@ function MovieDetail() {
           <div
             className="movie-detail-backdrop"
             style={{
-              backgroundImage: `url(${
-                "https://image.tmdb.org/t/p/w500" + movie.poster_path
-              })`,
+              backgroundImage: `url(${"https://image.tmdb.org/t/p/w500" + movie.poster_path
+                })`,
             }}
           />
           <div className="movie-detail-backdrop-gradient" />
@@ -89,15 +94,39 @@ function MovieDetail() {
                   ))}
                 </div>
                 <div className="movie-detail-actions">
-                  <button 
-                  className="movie-detail-btn movie-detail-btn-primary"
-                  onClick= { (e)=>{
-                    e.preventDefault();
-                    alert("この機能はまだ実装されていません")
-                  }}>
+                  <button
+                    className="movie-detail-btn movie-detail-btn-primary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      alert("この機能はまだ実装されていません")
+                    }}>
                     ▶ Watch Now
                   </button>
-                  <button className="movie-detail-btn">
+                  <button className="movie-detail-btn" onClick={async () => {
+                    if (!user) {
+                      alert("ログインしてください");
+                      return;
+                    }
+
+                    try {
+                      await setDoc(
+                        doc(db, "users", user.uid, "mylist", String(movie.id)),
+                        {
+                          id: movie.id,
+                          original_title: movie.original_title,
+                          overview: movie.overview,
+                          poster_path: movie.poster_path,
+                          release_date: movie.release_date,
+                          created_at: new Date(),
+                        }
+                      );
+                      alert("マイリストに追加しました");
+                    } catch (error) {
+                      console.error("マイリスト追加エラー:", error);
+                      alert("追加に失敗しました");
+                    }
+                  }}
+                  >
                     ＋ Add to My List
                   </button>
                 </div>

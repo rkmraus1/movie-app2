@@ -7,16 +7,26 @@ import AnimeSection from "../components/AnimeSection";
 import MyListSection from "../components/MyListSection";
 import LoginSection from "../components/LoginSection";
 import type { Anime, Movie, MovieJson } from "../types/media";
-import { auth, googleProvider } from "../firebase";
+import { auth, db, googleProvider } from "../firebase";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { collection, getDocs } from "firebase/firestore";
+import type { User } from "firebase/auth";
+
+type ContextType = {
+  user: User | null;
+  setUser: (user: User | null) => void;
+};
+
 
 function App() {
+  const [user, setUser] = useState<any>(null);
   const [keyword, setKeyword] = useState("");
   const [movieList, setMovieList] = useState<Movie[]>([]);
   const [animeList, setAnimeList] = useState<Anime[]>([]);
   const [searchAnimeList, setSearchAnimeList] = useState<Anime[]>([]);
   const [animeKeyword, setAnimeKeyword] = useState("");
   const [heroMovie, setHeroMovie] = useState<Movie | null>(null);
+  const [myList, setMyList] = useState<Movie[]>([]);
 
   const FetchAnimeList = async () => {
     const excludedGenres = [10751, 10762, 10770, 10766, 99, 10767, 35];
@@ -127,6 +137,24 @@ function App() {
     }
   };
 
+  
+
+  const fetchMyList = async (userId: string): Promise<Movie[]> => {
+    const myListRef = collection(db, "users", userId, "mylist");
+    const snapshot = await getDocs(myListRef);
+    const list: Movie[] = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: data.id,
+        original_title: data.original_title,
+        overview: data.overview,
+        poster_path: data.poster_path,
+        release_date: data.release_date,
+      };
+    });
+    return list;
+};
+
   const handleLogin = async () => {
   try {
     const result = await signInWithPopup(auth, googleProvider);
@@ -135,24 +163,6 @@ function App() {
     console.error("ログインエラー:", error);
   }
 };
-
-  const [myList, _] = useState<Movie[]>([
-    {
-      id: "1",
-      original_title: "君の名は。",
-      overview: "ある日、入れ替わった2人の高校生の物語。",
-      poster_path: "/yLglTwyFOUZt5fNKm0PWL1PK5gm.jpg",
-      release_date: "2016-08-26",
-    },
-    {
-      id: "2",
-      original_title: "千と千尋の神隠し",
-      overview: "不思議な世界に迷い込んだ少女の冒険。",
-      poster_path: "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
-      release_date: "2001-07-20",
-    }
-  ]);
-
 
   useEffect(() => {
     fetchMovieList();
@@ -172,8 +182,18 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+  const getList = async () => {
+    if (user) {
+      const list = await fetchMyList(user.uid);
+      setMyList(list);
+    } else {
+      setMyList([]); // ログアウト時は空に
+    }
+  };
 
+  getList();
+}, [user]);
 
   const displayedAnimeList = animeKeyword ? searchAnimeList : animeList;
 

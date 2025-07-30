@@ -1,7 +1,6 @@
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
-// 映画データの型（必要に応じて調整）
 type Movie = {
   id: string;
   original_title: string;
