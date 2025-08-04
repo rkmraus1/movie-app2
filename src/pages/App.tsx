@@ -41,18 +41,7 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-  const getList = async () => {
-    if (user) {
-      const list = await fetchMyList(user.uid);
-      setMyList(list);
-    } else {
-      setMyList([]); // ログアウト時は空に
-    }
-  };
 
-  getList();
-}, [user]);
 
   return (
     <div className="w-full max-w-screen-xl mx-auto">

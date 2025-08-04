@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
-import "../styles/MovieDetail.css";
 import { ArrowLeft, Clock, Star } from "lucide-react";
-import type { MovieDetail as MovieDetailType, MovieDetailJson } from "../types/media"
+
+import { addToMyList } from "../lib/mylist";
+import { useMyList } from "../hooks/useMyList"; 
+import type { Movie, MovieDetail, MovieDetailJson } from "../types/media";
+import "../styles/MovieDetail.css";
 
 type ContextType = {
   user: any;
@@ -11,8 +14,9 @@ type ContextType = {
 
 function MovieDetail() {
   const { id } = useParams();
-  const [movie, setMovie] = useState<MovieDetailType | null>(null);
+  const [movie, setMovie] = useState<MovieDetail | null>(null);
   const { user } = useOutletContext<ContextType>();
+  const { myList } = useMyList(user?.uid || null);
 
   const fetchMovieDetail = async () => {
     const response = await fetch(
@@ -33,6 +37,7 @@ function MovieDetail() {
       release_date: data.release_date,
       year: Number(data.release_date.split("-")[0]),
       rating: data.vote_average,
+      vote_average: data.vote_average,
       runtime: data.runtime,
       score: data.vote_count,
       genres: data.genres.map(
@@ -44,7 +49,7 @@ function MovieDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchMovieDetail();
-  }, []);
+  }, [id]); //idが変わったときだけ再実行
 
   return (
     <div className="movie-detail-root">
@@ -108,25 +113,20 @@ function MovieDetail() {
                       return;
                     }
 
+                     const isInMyList = myList.some((item: Movie) => item.id === movie.id);
+                      if (isInMyList) {
+                        alert("この作品はすでに追加されています。");
+                        return;
+                      }
+
                     try {
-                      await setDoc(
-                        doc(db, "users", user.uid, "mylist", String(movie.id)),
-                        {
-                          id: movie.id,
-                          original_title: movie.original_title,
-                          overview: movie.overview,
-                          poster_path: movie.poster_path,
-                          release_date: movie.release_date,
-                          created_at: new Date(),
-                        }
-                      );
+                      await addToMyList(user.uid, movie); // ← 外部化された関数に置き換え
                       alert("マイリストに追加しました");
                     } catch (error) {
                       console.error("マイリスト追加エラー:", error);
                       alert("追加に失敗しました");
                     }
-                  }}
-                  >
+                  }}>
                     ＋ Add to My List
                   </button>
                 </div>

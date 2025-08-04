@@ -18,6 +18,7 @@ export type MovieDetail = {
   runtime: number;
   score: number;
   genres: string[];
+  vote_average: number; 
 };
 
 // 一覧・検索取得用
