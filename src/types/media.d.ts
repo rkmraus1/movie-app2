@@ -5,6 +5,7 @@ export type Movie = {
   overview: string;
   release_date: string;
   genre_ids?: number[];
+  type?: "movie" | "anime";
 };
 
 export type MovieDetail = {

@@ -1,13 +1,23 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import "../styles/MovieDetail.css";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ArrowLeft, Clock, Star } from "lucide-react";
-import type { Anime,AnimeDetailJson } from "../types/media";
+import { addToMyList } from "../lib/mylist";
+import { useMyList } from "../hooks/useMyList";
+import type { Anime, AnimeDetailJson } from "../types/media";
+import "../styles/MovieDetail.css";
+
+type ContextType = {
+    user: any;
+    setUser: (user: any) => void;
+};
 
 function AnimeDetail() {
     const { id } = useParams();
     const pureId = id?.startsWith("anime-") ? id.slice(6) : id;
     const [anime, setAnime] = useState<Anime | null>(null);
+    const { user } = useOutletContext<ContextType>();
+    const { myList } = useMyList(user?.uid || null);
+
 
     const fetchAnimeDetail = async () => {
         const response = await fetch(
@@ -95,7 +105,33 @@ function AnimeDetail() {
                                     >
                                         ▶ Watch Now
                                     </button>
-                                    <button className="movie-detail-btn">＋ Add to My List</button>
+                                    <button
+                                        className="movie-detail-btn"
+                                        onClick={async () => {
+                                            if (!user) {
+                                                alert("ログインしてください");
+                                                return;
+                                            }
+
+                                            if (!anime) return;
+
+                                            const isInMyList = myList.some((item) => item.id === anime.id);
+                                            if (isInMyList) {
+                                                alert("この作品はすでに追加されています。");
+                                                return;
+                                            }
+
+                                            try {
+                                                await addToMyList(user.uid, anime, "anime");
+                                                alert("マイリストに追加しました");
+                                            } catch (error) {
+                                                console.error("マイリスト追加エラー:", error);
+                                                alert("追加に失敗しました");
+                                            }
+                                        }}
+                                    >
+                                        ＋ Add to My List
+                                    </button>
                                 </div>
                             </div>
                         </div>

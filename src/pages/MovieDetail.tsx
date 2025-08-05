@@ -120,7 +120,7 @@ function MovieDetail() {
                       }
 
                     try {
-                      await addToMyList(user.uid, movie); // ← 外部化された関数に置き換え
+                      await addToMyList(user.uid, movie,"movie"); // ← 外部化された関数に置き換え
                       alert("マイリストに追加しました");
                     } catch (error) {
                       console.error("マイリスト追加エラー:", error);

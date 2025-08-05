@@ -24,8 +24,11 @@ export const useMyList = (userId: string | null) => {
           overview: data.overview,
           poster_path: data.poster_path,
           release_date: data.release_date,
+          created_at: data.created_at?.toDate?.() ?? new Date(), // ← FirestoreのTimestamp対応
+          type: data.type || "movie", // type含まれていれば使いデフォルトでmovie
         };
-      });
+      })
+       .sort((a, b) => b.created_at.getTime() - a.created_at.getTime()); // ← 新しい順
 
       setMyList(list);
     };

@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import MovieCard from "./MovieCard";
 import type { Movie } from "../types/media";
+
 
 type Props = {
   myList: Movie[];
@@ -22,7 +24,6 @@ export default function MyListSection({ myList, user, handleLogin }: Props) {
 
             />
           </div>
-
           {/* ダミー2 */}
           <div onClick={handleLogin} className="relative movie-card">
             <img
@@ -59,7 +60,18 @@ export default function MyListSection({ myList, user, handleLogin }: Props) {
         {myList.length === 0 ? (
           <p className="movie-empty-text">マイリストは空です。</p>
         ) : (
-          myList.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+           myList.map((item) => (
+            <Link
+              key={item.id}
+              to={
+                item.type === "anime"
+                  ? `/animes/${item.id}`
+                  : `/movies/${item.id}`
+              }
+            >
+              <MovieCard movie={item} />
+            </Link>
+          ))
         )}
       </div>
     </section>
