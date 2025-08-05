@@ -12,7 +12,7 @@ type ContextType = {
   setUser: (user: any) => void;
 };
 
-function MovieDetail() {
+function MovieDetailPage() {
   const { id } = useParams();
   const [movie, setMovie] = useState<MovieDetail | null>(null);
   const { user } = useOutletContext<ContextType>();
@@ -139,4 +139,4 @@ function MovieDetail() {
   );
 }
 
-export default MovieDetail;
+export default MovieDetailPage;

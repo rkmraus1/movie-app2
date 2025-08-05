@@ -9,10 +9,8 @@ import { useMyList } from "../hooks/useMyList";
 import AnimeSection from "../components/AnimeSection";
 import MyListSection from "../components/MyListSection";
 import LoginSection from "../components/LoginSection";
-import type { Anime, Movie, MovieJson } from "../types/media";
-import { auth, db, googleProvider } from "../firebase";
-import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+import { auth, googleProvider } from "../firebase";
+import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
 
 
 function App() {
