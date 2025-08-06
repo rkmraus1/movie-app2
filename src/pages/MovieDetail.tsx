@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { ArrowLeft, Clock, Star } from "lucide-react";
 
 import { addToMyList } from "../lib/mylist";
-import { useMyList } from "../hooks/useMyList"; 
+import { useMyList } from "../hooks/useMyList";
 import type { Movie, MovieDetail, MovieDetailJson } from "../types/media";
 import "../styles/MovieDetail.css";
+
 
 type ContextType = {
   user: any;
@@ -16,7 +18,7 @@ function MovieDetailPage() {
   const { id } = useParams();
   const [movie, setMovie] = useState<MovieDetail | null>(null);
   const { user } = useOutletContext<ContextType>();
-  const { myList } = useMyList(user?.uid || null);
+  const { myList, refresh } = useMyList(user?.uid || null);
 
   const fetchMovieDetail = async () => {
     const response = await fetch(
@@ -112,19 +114,20 @@ function MovieDetailPage() {
                       alert("ログインしてください");
                       return;
                     }
+                    await refresh();
 
-                     const isInMyList = myList.some((item: Movie) => item.id === movie.id);
-                      if (isInMyList) {
-                        alert("この作品はすでに追加されています。");
-                        return;
-                      }
+                    const isInMyList = myList.some((item: Movie) => item.id === movie.id);
+                    if (isInMyList) {
+                      alert("この作品はすでに追加されています。");
+                      return;
+                    }
 
                     try {
-                      await addToMyList(user.uid, movie,"movie"); // ← 外部化された関数に置き換え
-                      alert("マイリストに追加しました");
+                      await addToMyList(user.uid, movie, "movie"); // ← 外部化された関数に置き換え
+                      toast.success("マイリストに追加しました");
                     } catch (error) {
                       console.error("マイリスト追加エラー:", error);
-                      alert("追加に失敗しました");
+                      toast.error("追加に失敗しました");
                     }
                   }}>
                     ＋ Add to My List

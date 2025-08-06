@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { ArrowLeft, Clock, Star } from "lucide-react";
 import { addToMyList } from "../lib/mylist";
 import { useMyList } from "../hooks/useMyList";
@@ -16,7 +17,7 @@ function AnimeDetail() {
     const pureId = id?.startsWith("anime-") ? id.slice(6) : id;
     const [anime, setAnime] = useState<Anime | null>(null);
     const { user } = useOutletContext<ContextType>();
-    const { myList } = useMyList(user?.uid || null);
+    const { myList, refresh } = useMyList(user?.uid || null);
 
 
     const fetchAnimeDetail = async () => {
@@ -113,6 +114,8 @@ function AnimeDetail() {
                                                 return;
                                             }
 
+                                            await refresh();
+
                                             if (!anime) return;
 
                                             const isInMyList = myList.some((item) => item.id === anime.id);
@@ -123,10 +126,10 @@ function AnimeDetail() {
 
                                             try {
                                                 await addToMyList(user.uid, anime, "anime");
-                                                alert("マイリストに追加しました");
+                                                toast.success("マイリストに追加しました");
                                             } catch (error) {
                                                 console.error("マイリスト追加エラー:", error);
-                                                alert("追加に失敗しました");
+                                                toast.error("追加に失敗しました");
                                             }
                                         }}
                                     >

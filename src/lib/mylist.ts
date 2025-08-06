@@ -19,7 +19,7 @@ export const addToMyList = async (uid: string, media: MovieDetail | Anime, type:
 };
 
 //マイリストから削除
-export const removeFromMyList = async (uid: string, movieId: string) => {
-  await deleteDoc(doc(db, "users", uid, "mylist", movieId));
+export const removeFromMyList = async (uid: string, mediaId: string | number) => {
+  await deleteDoc(doc(db, "users", uid, "mylist", String(mediaId))); 
 };
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/App.css";
 import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
@@ -75,8 +76,8 @@ function App() {
         <LoginSection user={user} setUser={setUser} />
 
       </div>
-
     </div>
+    
   );
 
 }

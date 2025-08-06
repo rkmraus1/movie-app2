@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import MovieCard from "./MovieCard";
-import type { Movie } from "../types/media";
-
+import { removeFromMyList } from "../lib/mylist";
+import { useMyList } from "../hooks/useMyList";
 
 type Props = {
-  myList: Movie[];
   user: any;
   handleLogin: () => void;
 };
 
-export default function MyListSection({ myList, user, handleLogin }: Props) {
+
+
+export default function MyListSection({ user, handleLogin }: Props) {
+  const { myList, refresh } = useMyList(user?.uid || null);
+
   if (!user) {
     return (
       <section className="movie-row-section">
@@ -60,18 +64,49 @@ export default function MyListSection({ myList, user, handleLogin }: Props) {
         {myList.length === 0 ? (
           <p className="movie-empty-text">マイリストは空です。</p>
         ) : (
-           myList.map((item) => (
-            <Link
-              key={item.id}
-              to={
-                item.type === "anime"
-                  ? `/animes/${item.id}`
-                  : `/movies/${item.id}`
-              }
-            >
-              <MovieCard movie={item} />
-            </Link>
+          myList.map((item) => (
+            <div key={item.id} className="relative inline-block mr-4 group">
+              {/* ✅ 削除ボタンを外に出す */}
+              <button
+                onClick={async (e) => {
+                  e.preventDefault(); // 念のため
+                  const confirmDelete = confirm("この作品をマイリストから削除しますか？");
+                  if (!confirmDelete) return;
+
+                  try {
+                    await removeFromMyList(user.uid, item.id);
+                    toast.success("削除しました", {
+                      icon: false,
+                      style: {
+                        background: "#333",  // 黒系背景
+                        color: "#fff",       // 白字
+                        fontSize: "14px",
+                      },
+                    });
+                    await refresh();
+                  } catch (error) {
+                    console.error("削除エラー:", error);
+                    toast.error("削除に失敗しました 💥");
+                  }
+                }}
+                className="absolute top-1.5 right-1.5 text-white text-[11px] px-1 py-0.5 rounded-full bg-gray-800 bg-opacity-30 hover:bg-opacity-40 hover:scale-105 transition-all duration-200 z-10 opacity-0 group-hover:opacity-100"
+              >
+                ✕
+              </button>
+
+              {/* ✅ 遷移するリンク */}
+              <Link
+                to={
+                  item.type === "anime"
+                    ? `/animes/${item.id}`
+                    : `/movies/${item.id}`
+                }
+              >
+                <MovieCard movie={item} />
+              </Link>
+            </div>
           ))
+
         )}
       </div>
     </section>
