@@ -75,21 +75,15 @@ export default function MyListSection({ user, handleLogin }: Props) {
 
                   try {
                     await removeFromMyList(user.uid, item.id);
-                    toast.success("削除しました", {
-                      icon: false,
-                      style: {
-                        background: "#333",  // 黒系背景
-                        color: "#fff",       // 白字
-                        fontSize: "14px",
-                      },
-                    });
+                    toast.success("削除しました");
                     await refresh();
                   } catch (error) {
                     console.error("削除エラー:", error);
-                    toast.error("削除に失敗しました 💥");
+                    toast.error("削除に失敗しました ");
                   }
                 }}
-                className="absolute top-1.5 right-1.5 text-white text-[11px] px-1 py-0.5 rounded-full bg-gray-800 bg-opacity-30 hover:bg-opacity-40 hover:scale-105 transition-all duration-200 z-10 opacity-0 group-hover:opacity-100"
+                  className="absolute top-1.5 right-1.5 text-white text-[11px] px-1 py-0.5 rounded-full bg-gray-800 bg-opacity-30 hover:bg-opacity-40 hover:scale-105 transition-all duration-200 z-10 
+    opacity-100 sm:opacity-0 group-hover:sm:opacity-100"
               >
                 ✕
               </button>

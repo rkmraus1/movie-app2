@@ -111,14 +111,14 @@ function MovieDetailPage() {
                   </button>
                   <button className="movie-detail-btn" onClick={async () => {
                     if (!user) {
-                      alert("ログインしてください");
+                      toast.info("ログインしてください");
                       return;
                     }
                     await refresh();
 
                     const isInMyList = myList.some((item: Movie) => item.id === movie.id);
                     if (isInMyList) {
-                      alert("この作品はすでに追加されています。");
+                      toast.warning("この作品はすでに追加されています。");
                       return;
                     }
 

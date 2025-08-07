@@ -7,7 +7,7 @@ import Layout from "./layout/Layout";
 import App from "./pages/App.tsx";
 import MovieDetailPage from "./pages/MovieDetail.tsx";
 import AnimeDetail from "./pages/AnimeDetail.tsx";
-
+import Login from "./components/LoginSection"; 
 
 const router = createBrowserRouter([
   {

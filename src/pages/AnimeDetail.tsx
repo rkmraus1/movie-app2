@@ -110,7 +110,7 @@ function AnimeDetail() {
                                         className="movie-detail-btn"
                                         onClick={async () => {
                                             if (!user) {
-                                                alert("ログインしてください");
+                                                toast.info("ログインしてください");
                                                 return;
                                             }
 
@@ -120,7 +120,7 @@ function AnimeDetail() {
 
                                             const isInMyList = myList.some((item) => item.id === anime.id);
                                             if (isInMyList) {
-                                                alert("この作品はすでに追加されています。");
+                                                toast.warning("この作品はすでに追加されています。");
                                                 return;
                                             }
 

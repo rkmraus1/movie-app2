@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify"; 
-import "react-toastify/dist/ReactToastify.css"; 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { auth } from "../firebase";
@@ -24,7 +24,7 @@ const Layout = () => {
         <Outlet context={{ user, setUser }} /> {/* 下層ページに user を渡す */}
       </main>
       <Footer />
-            <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={3000}
         hideProgressBar={true}
