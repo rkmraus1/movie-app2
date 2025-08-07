@@ -44,7 +44,7 @@ function App() {
 
   return (
     <div className="w-full max-w-screen-xl mx-auto">
-      <Header user={user} />
+      <Header user={user} setUser={setUser}/>
 
       <HeroSection heroMovie={heroMovie} />
 

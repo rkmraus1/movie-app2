@@ -14,9 +14,9 @@ export async function addMovieToMyList(userId: string, movie: Movie) {
   try {
     const userCollectionRef = collection(db, "users", userId, "mylist");
     await addDoc(userCollectionRef, movie);
-    console.log("🎉 映画をマイリストに追加しました");
+    console.log("映画をマイリストに追加しました");
   } catch (error) {
-    console.error("🔥 映画の追加に失敗しました", error);
+    console.error("映画の追加に失敗しました", error);
   }
 }
 
@@ -27,7 +27,7 @@ export async function getMyList(userId: string): Promise<Movie[]> {
     const snapshot = await getDocs(userCollectionRef);
     return snapshot.docs.map(doc => doc.data() as Movie);
   } catch (error) {
-    console.error("🔥 マイリストの取得に失敗しました", error);
+    console.error("マイリストの取得に失敗しました", error);
     return [];
   }
 }

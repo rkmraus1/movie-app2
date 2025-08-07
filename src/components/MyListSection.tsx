@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import MovieCard from "./MovieCard";
+import ConfirmModal from "./ConfirmModel";
 import { removeFromMyList } from "../lib/mylist";
 import { useMyList } from "../hooks/useMyList";
-
+import { useState } from "react";
+import type { Movie, Anime } from "../types/media";
 type Props = {
   user: any;
   handleLogin: () => void;
@@ -13,6 +15,9 @@ type Props = {
 
 export default function MyListSection({ user, handleLogin }: Props) {
   const { myList, refresh } = useMyList(user?.uid || null);
+
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [targetItem, setTargetItem] = useState<Movie | Anime | null>(null);
 
   if (!user) {
     return (
@@ -68,27 +73,17 @@ export default function MyListSection({ user, handleLogin }: Props) {
             <div key={item.id} className="relative inline-block mr-4 group">
               {/* ✅ 削除ボタンを外に出す */}
               <button
-                onClick={async (e) => {
-                  e.preventDefault(); // 念のため
-                  const confirmDelete = confirm("この作品をマイリストから削除しますか？");
-                  if (!confirmDelete) return;
-
-                  try {
-                    await removeFromMyList(user.uid, item.id);
-                    toast.success("削除しました");
-                    await refresh();
-                  } catch (error) {
-                    console.error("削除エラー:", error);
-                    toast.error("削除に失敗しました ");
-                  }
+                onClick={(e) => {
+                  e.preventDefault();
+                  setTargetItem(item);
+                  setShowConfirm(true);
                 }}
-                  className="absolute top-1.5 right-1.5 text-white text-[11px] px-1 py-0.5 rounded-full bg-gray-800 bg-opacity-30 hover:bg-opacity-40 hover:scale-105 transition-all duration-200 z-10 
+                className="absolute top-1.5 right-1.5 text-white text-[11px] px-1 py-0.5 rounded-full bg-gray-800 bg-opacity-30 hover:bg-opacity-40 hover:scale-105 transition-all duration-200 z-10 
     opacity-100 sm:opacity-0 group-hover:sm:opacity-100"
               >
                 ✕
               </button>
 
-              {/* ✅ 遷移するリンク */}
               <Link
                 to={
                   item.type === "anime"
@@ -103,6 +98,28 @@ export default function MyListSection({ user, handleLogin }: Props) {
 
         )}
       </div>
+      {showConfirm && targetItem && (
+        <ConfirmModal
+          message="この作品をマイリストから削除しますか？"
+          onConfirm={async () => {
+            try {
+              await removeFromMyList(user.uid, targetItem.id);
+              toast.success("削除しました");
+              await refresh();
+            } catch (error) {
+              console.error("削除エラー:", error);
+              toast.error("削除に失敗しました");
+            } finally {
+              setShowConfirm(false);
+              setTargetItem(null);
+            }
+          }}
+          onCancel={() => {
+            setShowConfirm(false);
+            setTargetItem(null);
+          }}
+        />
+      )}
     </section>
   );
 }
