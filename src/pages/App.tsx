@@ -53,6 +53,7 @@ function App() {
           keyword={movieKeyword}
           setKeyword={setMovieKeyword}
           movieList={movieList}
+            user={user}
         />
       </div>
 

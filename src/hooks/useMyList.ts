@@ -1,43 +1,65 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-import type { Movie } from "../types/media";
+import type { Movie, Anime } from "../types/media";
+
+// 共用型を定義
+type MediaItem = (Movie | Anime) & {
+  created_at: Date;
+  type: 'movie' | 'anime';
+};
 
 export const useMyList = (userId: string | null) => {
-  const [myList, setMyList] = useState<Movie[]>([]);
+  const [myList, setMyList] = useState<MediaItem[]>([]);
 
   const fetchMyList = async () => {
     if (!userId) {
       setMyList([]);
-      return;
+      return [];
     }
 
     const myListRef = collection(db, "users", userId, "mylist");
     const snapshot = await getDocs(myListRef);
-    const list: Movie[] = snapshot.docs
-      .map((doc) => {
-        const data = doc.data();
+    
+    const list = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      
+      // 共通プロパティ
+      const baseItem = {
+        id: data.id,
+        poster_path: data.poster_path,
+        overview: data.overview,
+        created_at: data.created_at?.toDate?.() ?? new Date(),
+        type: data.type || 'movie' // デフォルトはmovie
+      };
+
+      // アニメ判定
+      if (data.type === 'anime' || data.original_name) {
         return {
-          id: data.id,
-          original_title: data.original_title,
-          overview: data.overview,
-          poster_path: data.poster_path,
-          release_date: data.release_date,
-          created_at: data.created_at?.toDate?.() ?? new Date(),
-          type: data.type || "movie",
+          ...baseItem,
+          original_name: data.original_name,
+          first_air_date: data.first_air_date,
+          type: 'anime' as const
         };
-      })
-      .sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+      }
+      
+      // 映画判定
+      return {
+        ...baseItem,
+        original_title: data.original_title,
+        release_date: data.release_date,
+        type: 'movie' as const
+      };
+    }).sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
 
     setMyList(list);
+    return list;
   };
 
-  // ✅ useEffect 内では上の fetchMyList を使う
   useEffect(() => {
     fetchMyList();
   }, [userId]);
 
-  // ✅ ここで fetchMyList を return に含めて refresh として外部に提供
   return {
     myList,
     refresh: fetchMyList,

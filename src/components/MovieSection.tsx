@@ -41,3 +41,4 @@ export default function MovieSection({ keyword, setKeyword, movieList }: MovieSe
     </>
   );
 }
+

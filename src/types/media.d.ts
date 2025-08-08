@@ -19,7 +19,7 @@ export type MovieDetail = {
   runtime: number;
   score: number;
   genres: string[];
-  vote_average: number; 
+  vote_average: number;
 };
 
 // 一覧・検索取得用
@@ -84,15 +84,15 @@ export type MovieDetailJson = {
 };
 
 export type Anime = {
-    id: string;
+  id: string;
     original_title: string;
-    overview: string;
-    poster_path: string;
-    year: number;
-    rating: number;
-    runtime: number;
+  overview: string;
+  poster_path: string;
+  year: number;
+  rating: number;
+  runtime: number;
     score: number;
-    genres: string[];
+  genres: string[];
 };
 
 export type AnimeDetailJson = {

@@ -109,12 +109,13 @@ function MovieDetailPage() {
                     }}>
                     ▶ Watch Now
                   </button>
-                  <button className="movie-detail-btn" onClick={async () => {
+                  <button className="movie-detail-btn"
+                  onClick={async () => {
                     if (!user) {
                       toast.info("ログインしてください");
                       return;
                     }
-                    await refresh();
+                    await refresh(); 
 
                     const isInMyList = myList.some((item: Movie) => item.id === movie.id);
                     if (isInMyList) {
@@ -124,6 +125,7 @@ function MovieDetailPage() {
 
                     try {
                       await addToMyList(user.uid, movie, "movie"); // ← 外部化された関数に置き換え
+                      await refresh();
                       toast.success("マイリストに追加しました");
                     } catch (error) {
                       console.error("マイリスト追加エラー:", error);

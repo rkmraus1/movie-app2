@@ -113,10 +113,9 @@ function AnimeDetail() {
                                                 toast.info("ログインしてください");
                                                 return;
                                             }
-
-                                            await refresh();
-
                                             if (!anime) return;
+
+                                            const updatedList = await refresh();
 
                                             const isInMyList = myList.some((item) => item.id === anime.id);
                                             if (isInMyList) {
@@ -126,6 +125,7 @@ function AnimeDetail() {
 
                                             try {
                                                 await addToMyList(user.uid, anime, "anime");
+                                                await refresh();
                                                 toast.success("マイリストに追加しました");
                                             } catch (error) {
                                                 console.error("マイリスト追加エラー:", error);

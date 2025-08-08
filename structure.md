@@ -1,13 +1,14 @@
 .
 ├── dist
 ├   ├── assets
-├   ├   ├── index-6Ahz3Mq4.js
-├   ├   └── index-BpVW76d5.css
+├   ├   ├── index-2iD0Zx-C.js
+├   ├   └── index-DlrX0NUU.css
 ├   └── index.html
 ├── public
 ├── src
 ├   ├── components
 ├   ├   ├── AnimeSection.tsx
+├   ├   ├── ConfirmModel.tsx
 ├   ├   ├── Footer.tsx
 ├   ├   ├── Header.tsx
 ├   ├   ├── HeroSection.tsx
@@ -15,10 +16,15 @@
 ├   ├   ├── MovieCard.tsx
 ├   ├   ├── MovieSection.tsx
 ├   ├   └── MyListSection.tsx
+├   ├── hooks
+├   ├   ├── useAnime.ts
+├   ├   ├── useMovies.ts
+├   ├   └── useMyList.ts
 ├   ├── layout
 ├   ├   └── Layout.tsx
 ├   ├── lib
-├   ├   └── firestoreUtils.ts
+├   ├   ├── firestoreUtils.ts
+├   ├   └── mylist.ts
 ├   ├── pages
 ├   ├   ├── AnimeDetail.tsx
 ├   ├   ├── App.tsx
@@ -45,4 +51,4 @@
 ├── tsconfig.node.json
 └── vite.config.ts
 
-11 directories, 35 files
+12 directories, 40 files
