@@ -1,69 +1,66 @@
-# React + TypeScript + Vite
+#  サービス名
+あなただけのお気に入りの作品リストを作る"MOVIEBOX"
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## "MOVIEBOX"の概要
+お気に入りの作品、見たい作品を自分のリストに追加して
+直感的に自分だけのマイリストを作れるwebアプリケーション
 
-Currently, two official plugins are available:
+## 作成動機
+映画やアニメをよく視聴するので、今まで見た作品や、今後見たい作品の
+ランキングをiphoneのメモアプリにに書いて保管していました。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+作品が増えていくごとに、
+より手軽にサムネイル付きの作品を検索して追加して簡単にリストが作成できたり
+共有できるアプリがあればいいなと思い、同じような方がおられるのではないかと思い作成しました。
+具体的なデザインなどは某有名動画配信サービスのデザインを参考にしております。
 
-## Expanding the ESLint configuration
+今後はランキング機能を実装し、共有したり作品を表示できるようなプラットホームにアップデートしていきたいです。
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 主な機能
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### ユーザー関連
+・映画、アニメ人気リストを自動表示
+・映画、アニメの検索機能
+・映画、アニメ作品の詳細ページを表示
+・ログイン機能 (Google)
+・マイリストに作品を追加、削除
+・ログイン状態でマイリストの取得
+・ロゴをクリックするとトップページに推移
+・メニューリストをクリックすると、そのリストにスライド(詳細ページからはtopページに飛んでからスライド)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+###　その他
+・レシポンシブ対応(スマホサイズだとハンバーガーメニューになる)
+・追加や削除、ログインやログアウト時のトースト表示
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+##こだわったポイント
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 制作期間
+約1ヶ月半
+
+## 仕様スタック
+・Frontend
+React
+TypeScript
+
+・UI Liblary
+Tailwind CSS
+
+・Backend/DB
+Firebase Auth
+Firestore
+
+・CI/CD
+Vercel
+
+・Souce Code Management
+Git/Github
+
+・Others
+TMDB API
+
+## ER図
+
+##　画面遷移図
+Figma
