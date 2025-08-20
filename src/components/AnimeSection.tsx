@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import MovieCard from "./MovieCard";
+import MediaCard from "./MediaCard";
 import type { Anime } from "../types/media";
 
 interface AnimeSectionProps {
@@ -26,7 +26,7 @@ export default function AnimeSection({ animeList, keyword, setKeyword }: AnimeSe
         <div className="movie-row-scroll">
           {uniqueAnimeList.map((anime) => (
             <Link to={`/animes/anime-${anime.id}`} key={anime.id}>
-              <MovieCard movie={anime} />
+              <MediaCard movie={anime} />
             </Link>
           ))}
 

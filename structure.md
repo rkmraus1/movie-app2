@@ -13,7 +13,7 @@
 ├   ├   ├── Header.tsx
 ├   ├   ├── HeroSection.tsx
 ├   ├   ├── LoginSection.tsx
-├   ├   ├── MovieCard.tsx
+├   ├   ├── MediaCard.tsx
 ├   ├   ├── MovieSection.tsx
 ├   ├   └── MyListSection.tsx
 ├   ├── hooks
@@ -35,6 +35,8 @@
 ├   ├   └── MovieDetail.css
 ├   ├── types
 ├   ├   └── media.d.ts
+├   ├── utils
+├   ├   └── scrollUtils.ts
 ├   ├── firebase.ts
 ├   ├── main.tsx
 ├   └── vite-env.d.ts
@@ -51,4 +53,4 @@
 ├── tsconfig.node.json
 └── vite.config.ts
 
-12 directories, 40 files
+13 directories, 41 files

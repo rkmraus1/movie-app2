@@ -18,6 +18,7 @@ function Header({ children, user, setUser }: Props) {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // スクロール位置を復元するためのuseEffect
   useEffect(() => {
     if (location.pathname === "/") {
       const params = new URLSearchParams(location.search);
@@ -42,6 +43,7 @@ function Header({ children, user, setUser }: Props) {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  // ロゴクリック時の処理
   const handleLogoClick = (e: React.MouseEvent) => {
     if (location.pathname === "/") {
       e.preventDefault();
@@ -49,7 +51,7 @@ function Header({ children, user, setUser }: Props) {
     }
   };
 
-  // ログアウト処理関数を追加
+  // ログアウト処理
 const handleLogout = async () => {
   try {
     toast.success("ログアウトしました");
@@ -66,11 +68,6 @@ const handleLogout = async () => {
   const handleNavClick = (sectionId: string, e: React.MouseEvent) => {
     e.preventDefault();
     setIsOpen(false);
-
-    if (sectionId === "mylist" && !user) {
-      navigate("/login");
-      return;
-    }
 
     if (sectionId === "login" && user) {
       handleLogout(); 

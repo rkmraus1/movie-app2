@@ -10,7 +10,7 @@ type Props = {
   movie: Movie;
 };
 
-const MovieCard = (props: Props) => {
+const MediaCard = (props: Props) => {
   const { movie } = props;
 
   return (
@@ -30,4 +30,4 @@ const MovieCard = (props: Props) => {
 };
 
 
-export default MovieCard;
+export default MediaCard;

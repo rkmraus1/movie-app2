@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import MovieCard from "./MovieCard";
+import MediaCard from "./MediaCard";
 
 interface MovieSectionProps {
   keyword: string;
@@ -23,7 +23,7 @@ export default function MovieSection({ keyword, setKeyword, movieList }: MovieSe
         <div className="movie-row-scroll">
           {movieList.map((movie) => (
             <Link to={`/movies/${movie.id}`} key={movie.id}>
-              <MovieCard movie={movie} />
+              <MediaCard movie={movie} />
             </Link>
           ))}
         </div>

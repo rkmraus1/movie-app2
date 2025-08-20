@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import MovieCard from "./MovieCard";
+import MediaCard from "./MediaCard";
 import ConfirmModal from "./ConfirmModel";
 import { removeFromMyList } from "../lib/mylist";
 import { useMyList } from "../hooks/useMyList";
@@ -91,7 +91,7 @@ export default function MyListSection({ user, handleLogin }: Props) {
                     : `/movies/${item.id}`
                 }
               >
-                <MovieCard movie={item} />
+                <MediaCard movie={item} />
               </Link>
             </div>
           ))

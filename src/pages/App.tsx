@@ -11,11 +11,11 @@ import AnimeSection from "../components/AnimeSection";
 import MyListSection from "../components/MyListSection";
 import LoginSection from "../components/LoginSection";
 import { auth, googleProvider } from "../firebase";
-import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { onAuthStateChanged, signInWithPopup, type User } from "firebase/auth";
 
 
 function App() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [movieKeyword, setMovieKeyword] = useState("");
   const [animeKeyword, setAnimeKeyword] = useState("");
   const { movieList, heroMovie } = useMovies(movieKeyword);
@@ -41,7 +41,6 @@ function App() {
   }, []);
 
 
-
   return (
     <div className="w-full max-w-screen-xl mx-auto">
       <Header user={user} setUser={setUser}/>
@@ -53,7 +52,6 @@ function App() {
           keyword={movieKeyword}
           setKeyword={setMovieKeyword}
           movieList={movieList}
-            user={user}
         />
       </div>
 
