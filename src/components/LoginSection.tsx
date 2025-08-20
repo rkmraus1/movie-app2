@@ -3,6 +3,7 @@ import { signInWithPopup, signOut } from "firebase/auth";
 import { auth, googleProvider } from "../firebase";
 import { FcGoogle } from "react-icons/fc";
 import { BiLogOut } from "react-icons/bi";
+import { toast } from "react-toastify"; 
 
 type Props = {
     user: any;
@@ -13,9 +14,11 @@ function LoginSection({ user, setUser }: Props) {
     const handleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
-            setUser(result.user); // App.tsx に渡す
+            setUser(result.user);
+            toast.success("ログインしました！"); 
         } catch (error) {
             console.error("ログインエラー:", error);
+            toast.error("ログインに失敗しました"); 
         }
     };
 
@@ -23,8 +26,10 @@ function LoginSection({ user, setUser }: Props) {
         try {
             await signOut(auth);
             setUser(null);
+            toast.success("ログアウトしました"); 
         } catch (error) {
             console.error("ログアウトエラー:", error);
+            toast.error("ログアウトに失敗しました"); 
         }
     };
 
@@ -56,7 +61,6 @@ function LoginSection({ user, setUser }: Props) {
             )}
         </div>
     );
-
 }
 
 export default LoginSection;
