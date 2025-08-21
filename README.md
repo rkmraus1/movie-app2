@@ -37,7 +37,6 @@
 ## こだわったポイント
 <li>トースト表示で操作時の煩わしさをできるだけ軽減した</li>
 <li>人気アニメにフィルターをかけ、教育系のアニメ等のジャンルを省いた</li>
-
 <li></li>
 
 ## 仕様スタック
@@ -58,13 +57,13 @@ Vercel
 Git/Github  
 
 <li>Others</li>
-VSCode  
-TMDBAPI  
+Visual Studio Code
+TMDB API  
 
 
 ### 制作期間
 
-約2ヶ月
+約1ヶ月半
 
 ## ER図
 
