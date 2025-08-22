@@ -67,6 +67,7 @@ TMDB API
 ![pageimages](./public/images/er-diagram.svg)
 
 ##　画面遷移図
+
 [Figma](https://www.figma.com/design/9wkCnmA2sj8KUnrXZ6Smxz/MOBIEBOX-%E7%94%BB%E9%9D%A2%E6%8E%A8%E7%A7%BB%E5%9B%B3?t=mT8iNeoinXglpFoQ-1)
 
 
