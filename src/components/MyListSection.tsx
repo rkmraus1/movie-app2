@@ -67,7 +67,8 @@ export default function MyListSection({ user, handleLogin }: Props) {
       <h2 className="movie-row-title">マイリスト</h2>
       <div className="movie-row-scroll">
         {myList.length === 0 ? (
-          <p className="movie-empty-text">マイリストは空です。</p>
+           
+          <p className="movie-empty-text  text-white ">マイリストは空です。</p>
         ) : (
           myList.map((item) => (
             <div key={item.id} className="relative inline-block mr-4 group">
