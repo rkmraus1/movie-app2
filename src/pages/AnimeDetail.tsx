@@ -114,9 +114,8 @@ function AnimeDetail() {
                                                 return;
                                             }
                                             if (!anime) return;
-
-                                            const updatedList = await refresh();
-
+                                            await refresh();
+                                            
                                             const isInMyList = myList.some((item) => item.id === anime.id);
                                             if (isInMyList) {
                                                 toast.warning("この作品はすでに追加されています。");

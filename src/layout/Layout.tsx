@@ -19,7 +19,7 @@ const Layout = () => {
 
   return (
     <>
-      <Header user={user} />
+      <Header user={user} setUser={setUser} />
       <main>
         <Outlet context={{ user, setUser }} /> {/* 下層ページに user を渡す */}
       </main>

@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useState } from "react";
+import { type User } from "firebase/auth";
 import MediaCard from "./MediaCard";
 import ConfirmModal from "./ConfirmModel";
 import { removeFromMyList } from "../lib/mylist";
 import { useMyList } from "../hooks/useMyList";
-import { useState } from "react";
 import type { Movie, Anime } from "../types/media";
+
 type Props = {
-  user: any;
+  user: User | null;
   handleLogin: () => void;
+  myList: Movie[];
 };
-
-
 
 export default function MyListSection({ user, handleLogin }: Props) {
   const { myList, refresh } = useMyList(user?.uid || null);

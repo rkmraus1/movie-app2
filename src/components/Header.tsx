@@ -2,15 +2,15 @@ import '../styles/index.css';
 import "../styles/App.css";
 import { useState, useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
+import { signOut, type User } from "firebase/auth";
 import { auth } from "../firebase";
 import { BiLogOut } from "react-icons/bi";
 import { toast } from "react-toastify"; 
 
 type Props = {
   children?: React.ReactNode;
-  user: any;
-  setUser: (user: any) => void; 
+  user: User | null;
+  setUser: (user: User | null) => void; 
 };
 
 function Header({ children, user, setUser }: Props) {

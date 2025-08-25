@@ -40,7 +40,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-
   return (
     <div className="w-full max-w-screen-xl mx-auto">
       <Header user={user} setUser={setUser}/>
