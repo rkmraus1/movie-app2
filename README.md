@@ -70,7 +70,6 @@ TMDB API
 ### 学習記録
 
 Zenn記事:  
-
 [0から独学でReact × TypeScript × Firebaseで映画検索アプリを作ってVercelでデプロイするまでの4ヶ月間の記録](https://zenn.dev/rkmrdse/articles/a51296d1750812)
 
 ## ER図
