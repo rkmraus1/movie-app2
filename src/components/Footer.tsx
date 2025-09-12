@@ -22,7 +22,7 @@ const Footer = () => {
     },
     { 
       name: "Contact", 
-      path: "mailto:rkmraus@gmail.com",
+      path: "mailto:rkmrdse@gmail.com",
       icon: "✉️",
       highlight: true
     },
